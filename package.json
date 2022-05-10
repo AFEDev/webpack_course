@@ -9,6 +9,7 @@
     "watch": "cross-env NODE_ENV=development webpack --node development --watch",
     "start": "cross-env NODE_ENV=development webpack-dev-server --mode development --open"
   },
+  "browserslist": "> 0.25%, not dead",
   "keywords": [
     "js",
     "javascript",
@@ -19,7 +20,6 @@
   "devDependencies": {
     "@babel/core": "^7.17.10",
     "@babel/preset-env": "^7.17.10",
-    "@babel/preset-typescript": "^7.16.7",
     "babel-loader": "^8.2.5",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^10.2.4",
@@ -43,7 +43,6 @@
     "xml-loader": "^1.2.1"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.12.1",
     "jquery": "^3.6.0",
     "normalize.css": "^8.0.1"
   }
