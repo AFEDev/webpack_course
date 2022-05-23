@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require ('mini-css-extract-plugin')
 const TerserWebpackPlugin = require ('terser-webpack-plugin')
 const CssMinimizerWebpackPlugin = require ('css-minimizer-webpack-plugin')
+const { loader } = require('mini-css-extract-plugin')
 
 const isDev = process.env.NODE_ENV === 'development'
 const isProd = !isDev;
@@ -40,12 +41,40 @@ const cssLoaders = extra => {
     return loaders
 }
 
+const babelOptions = preset => {
+ const options = {
+        presets: [
+                "@babel/preset-env"]
+        }
+
+        if (preset) {
+            options.presets.push(preset)
+        }
+
+        return options
+    }
+
+    const jsLoaders = () => {
+        const loaders = [ {
+           loader: "babel-loader",
+           options: babelOptions()
+        }]
+
+        if (isDev) {
+
+        }
+
+    return loaders;
+
+    }
+
+
 module.exports = {
 context: path.resolve(__dirname, 'src'),
 mode: 'development',
 entry: {
    main: ['@babel/polyfill', './index.js'],
-   analytics: './analytics.js',
+   analytics: './analytics.ts',
 },
 output: {
     filename: filename('js'),
@@ -76,7 +105,7 @@ plugins: [
         {
             from: path.resolve(__dirname, 'src/favicon.ico'),
             to:path.resolve(__dirname, 'dist')
-        }
+        },
     ]
 }),
 new MiniCssExtractPlugin ({
@@ -114,16 +143,18 @@ new MiniCssExtractPlugin ({
                 loader: 'csv-loader',
             },
             {
-                test: /\.m?js$/,
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: jsLoaders()
+            },
+            {
+                test: /\.ts$/,
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader",
-                options: {
-                    presets: [
-                        '@babel/preset-env']
-                    }
+                    options: babelOptions("@babel/preset-typescript")
                 }
-            }
+            },
         ]
     }
 }
